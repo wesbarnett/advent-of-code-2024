@@ -44,8 +44,8 @@ def part2(aoc_input, do_submit=False):
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument("--submit-part1", action="store_false")
-    parser.add_argument("--submit-part2", action="store_false")
+    parser.add_argument("--submit-part1", action="store_true")
+    parser.add_argument("--submit-part2", action="store_true")
     args = parser.parse_args()
 
     aoc_input = get_input(YEAR, DAY)
