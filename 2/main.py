@@ -27,8 +27,26 @@ def part1(aoc_input, do_submit=False):
 
 
 def part2(aoc_input, do_submit=False):
-    res = None
+    tot = 0
+    for data in parse_input(aoc_input):
+        for j in range(len(data)):
+            data_slice = data[:j] + data[j + 1 :]
+            _range = range(len(data_slice) - 1)
+            all_decreasing = all(
+                [(data_slice[i + 1] - data_slice[i]) < 0 for i in _range]
+            )
+            all_increasing = all(
+                [(data_slice[i + 1] - data_slice[i]) > 0 for i in _range]
+            )
+            adjacent_rule = all(
+                [0 < abs(data_slice[i + 1] - data_slice[i]) < 4 for i in _range]
+            )
 
+            if adjacent_rule and (all_decreasing or all_increasing):
+                tot += 1
+                break
+
+    res = tot
     if do_submit:
         submit(res, YEAR, DAY, 2)
 
@@ -44,4 +62,4 @@ if __name__ == "__main__":
     aoc_input = get_input(YEAR, DAY)
 
     print(part1(aoc_input, args.submit_part1))
-#   print(part2(aoc_input, args.submit_part2))
+    print(part2(aoc_input, args.submit_part2))
