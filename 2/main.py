@@ -1,4 +1,5 @@
 from argparse import ArgumentParser
+from itertools import pairwise
 from aoc_tool import get_input, submit
 
 YEAR, DAY = 2024, 2
@@ -11,11 +12,8 @@ def parse_input(aoc_input):
 def part1(aoc_input, do_submit=False):
     res = sum(
         [
-            all([0 < abs(data[i + 1] - data[i]) < 4 for i in range(len(data) - 1)])
-            and (
-                all([(data[i + 1] - data[i]) < 0 for i in range(len(data) - 1)])
-                or all([(data[i + 1] - data[i]) > 0 for i in range(len(data) - 1)])
-            )
+            all([0 < abs(y - x) < 4 for x, y in pairwise(data)])
+            and (all([(y - x) < 0 for x, y in pairwise(data)]) or all([(y - x) > 0 for x, y in pairwise(data)]))
             for data in parse_input(aoc_input)
         ]
     )
@@ -31,10 +29,9 @@ def part2(aoc_input, do_submit=False):
     for data in parse_input(aoc_input):
         for j in range(len(data)):
             data_slice = data[:j] + data[j + 1 :]
-            _range = range(len(data_slice) - 1)
-            all_decreasing = all([(data_slice[i + 1] - data_slice[i]) < 0 for i in _range])
-            all_increasing = all([(data_slice[i + 1] - data_slice[i]) > 0 for i in _range])
-            adjacent_rule = all([0 < abs(data_slice[i + 1] - data_slice[i]) < 4 for i in _range])
+            all_decreasing = all([(y - x) < 0 for x, y in pairwise(data_slice)])
+            all_increasing = all([(y - x) > 0 for x, y in pairwise(data_slice)])
+            adjacent_rule = all([0 < abs(y - x) < 4 for x, y in pairwise(data_slice)])
 
             if adjacent_rule and (all_decreasing or all_increasing):
                 tot += 1
