@@ -4,8 +4,6 @@ from aoc_tool import get_input, submit
 
 YEAR, DAY = 2024, 3
 
-
-
 def part1(aoc_input, do_submit=False):
     res = 0
     for x in aoc_input.split("mul("):
@@ -22,7 +20,36 @@ def part1(aoc_input, do_submit=False):
 
 
 def part2(aoc_input, do_submit=False):
-    pass
+    next_mul_enabled = True
+    res = 0
+    for x in aoc_input.split("mul("):
+        mul_enabled = next_mul_enabled
+
+        dont_index = x.rfind("don't()")
+        do_index = x.rfind("do()")
+
+        if dont_index == -1 and do_index == -1:
+            pass
+        elif dont_index > do_index:
+            next_mul_enabled = False
+        else:
+            next_mul_enabled = True
+
+        y = x.split(",", maxsplit=1)
+
+        try:
+            if mul_enabled:
+                res += int(y[0]) * int(y[1].split(")")[0])
+            else:
+                pass
+        except:
+            continue
+
+    if do_submit:
+        submit(res, YEAR, DAY, 2)
+
+    return res
+
 
 
 if __name__ == "__main__":
